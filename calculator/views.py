@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import re
 
 DATA = {
     'omlet': {
@@ -19,10 +20,13 @@ DATA = {
 }
 
 
-def omlet(request, menu = DATA):
-    recipe = {}
+def calculator(request, menu = DATA):
     servings = int(request.GET.get('servings', 1))
-    dishes = menu['omlet']
+    name_pattern = r"(\<{1})([A-z]*)(\:)(\s{1})([A-Z]{3})(\s{1})(\'{1})(\/{1})([a-z]+)(\/{1})(\??)(([a-z]{8})?)(\=?)(\d?)(\'{1})(\>{1})"
+    result = r"\9"
+    delicious = re.sub(name_pattern, result, str(request))
+    recipe = {}
+    dishes = menu[delicious]
     for ingredients, mass in dishes.items():
         mass *= servings
         recipe[ingredients] = mass
@@ -30,31 +34,6 @@ def omlet(request, menu = DATA):
         'recipe': recipe
     }
     return render(request, 'calculator/home.html', context)
-
-def pasta(request, menu = DATA):
-    recipe = {}
-    servings = int(request.GET.get('servings', 1))
-    dishes = menu['pasta']
-    for ingredients, mass in dishes.items():
-        mass *= servings
-        recipe[ingredients] = mass
-    context = {
-        'recipe': recipe
-    }
-    return render(request, 'calculator/home.html', context)
-
-def buter(request, menu = DATA):
-    recipe = {}
-    servings = int(request.GET.get('servings', 1))
-    dishes = menu['buter']
-    for ingredients, mass in dishes.items():
-        mass *= servings
-        recipe[ingredients] = mass
-    context = {
-        'recipe': recipe
-    }
-    return render(request, 'calculator/home.html', context)
-
 
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)

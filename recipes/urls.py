@@ -15,11 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from calculator.views import omlet, pasta, buter
+from calculator.views import calculator
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('omlet/', omlet),
-    path('pasta/', pasta),
-    path('buter/', buter)
+    path('omlet/', calculator),
+    path('pasta/', calculator),
+    path('buter/', calculator)
 ]
